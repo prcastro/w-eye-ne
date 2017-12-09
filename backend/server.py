@@ -3,6 +3,7 @@ import json
 
 import numpy as np
 import pandas as pd
+from PIL import Image
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -24,7 +25,9 @@ def food_kind():
     model = load_model()
     file = request.files['file']
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-    food = model.predict(file)[0]
+    img = Image.open(file)
+    img_array = np.array(img).astype("float32")
+    food = model.predict(img_array)[0]
     return food, 200
 
 @app.route('/wine/<food>', methods=['GET'])
