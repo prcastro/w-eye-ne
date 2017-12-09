@@ -3,19 +3,21 @@ import json
 
 import numpy as np
 import pandas as pd
+from flask_cors import CORS
 from keras.models import load_model
 from keras.applications.resnet50 import preprocess_input
 from keras.preprocessing.image import img_to_array, load_img
 from flask import Flask, request
 
 app = Flask(__name__)
+cors = CORS(app)
 
 UPLOAD_FOLDER = 'images/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 def keras_load_model():
-    model = load_model('../weights/model-v0.h5')
+    model = load_model('../weights/model-v1.h5')
     return model
 
 def get_label(output):
@@ -43,7 +45,10 @@ def wine_that_matched(food):
     food_wine = json.load(open('../data/food_wine.json'))
     wine_table = pd.read_csv("../data/wine_table.csv")
     wine_table.index = wine_table.name
-    wine = food_wine[food]
+    try:
+        wine = food_wine[food]
+    except KeyError:
+        return "Food not found", 404
     wine_info = wine_table.loc[wine].to_json()
     return wine_info
 
