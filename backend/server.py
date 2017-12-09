@@ -33,6 +33,7 @@ def food_kind():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
     img = Image.open(file)
     img_array = np.array(img).astype("float32")
+    img_array = np.expand_dims(img_array, axis=0)
     food = model.predict(img_array)[0]
     return food, 200
 
