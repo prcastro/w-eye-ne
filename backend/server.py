@@ -15,8 +15,8 @@ def keras_load_model():
 
 
 def normalize_probs(unnormalized_probs):
-    factor  = sum(top_probs)
-    return (np.array(top_probs)/factor).tolist()
+    factor  = sum(unnormalized_probs)
+    return (np.array(unnormalized_probs)/factor).tolist()
 
 
 def get_label(probabilities):
