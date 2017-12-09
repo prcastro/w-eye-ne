@@ -1,26 +1,26 @@
  <div class="home-page">
 
-  <!-- Splash banner that only shows when not logged in -->
-  <div class="banner">
-    <div class="container">
-      <h1 class="logo-font" ng-bind="::$ctrl.appName | lowercase"></h1>
-    </div>
-  </div>
 
   <div class="container page">
     <div class="row">
 
 
       <!-- Main view - contains tabs & article list -->
-      <div class="col-md-9">
-        
-        MAIN
+      <div class="col-md-12">
+<!--         
+        <input type="text" ng-model="$ctrl.slug">
+        <button ng-click="$ctrl.getResult()">Submit</button> -->
 
-      </div>
+        <label class="btn btn-primary">
+          <input type="file" id="importFile" on-file-change="$ctrl.fileChanged($event, files)" class="ng-hide">
+          <i class="mdi mdi-camera"></i> 
+          <span>Tira fotinha</span>										
+        </label>									
 
-      <!-- Sidebar where popular tags are listed -->
-      <div class="col-md-3">
-          SIDEBAR
+        <pre>
+          {{ $ctrl.result.data }} {{ $ctrl.pairing.name }}
+        </pre>
+
       </div>
 
       <!-- End the row & container divs -->

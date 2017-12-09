@@ -38935,7 +38935,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./components":10,"./config/app.config":13,"./config/app.constants":14,"./config/app.run":15,"./config/app.templates":16,"./home":20,"./layout":23,"./services":26,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./components":10,"./config/app.config":14,"./config/app.constants":15,"./config/app.run":16,"./config/app.templates":17,"./home":21,"./layout":24,"./services":28,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39189,6 +39189,10 @@ var _listPagination = require('./article-helpers/list-pagination.component');
 
 var _listPagination2 = _interopRequireDefault(_listPagination);
 
+var _onFileChange = require('./on-file-change.directive');
+
+var _onFileChange2 = _interopRequireDefault(_onFileChange);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var componentsModule = _angular2.default.module('app.components', []);
@@ -39207,9 +39211,11 @@ componentsModule.component('articlePreview', _articlePreview2.default);
 
 componentsModule.component('listPagination', _listPagination2.default);
 
+componentsModule.directive('onFileChange', _onFileChange2.default);
+
 exports.default = componentsModule;
 
-},{"./article-helpers/article-meta.component":5,"./article-helpers/article-preview.component":6,"./article-helpers/list-pagination.component":7,"./buttons/favorite-btn.component":8,"./buttons/follow-btn.component":9,"./list-errors.component":11,"./show-authed.directive":12,"angular":3}],11:[function(require,module,exports){
+},{"./article-helpers/article-meta.component":5,"./article-helpers/article-preview.component":6,"./article-helpers/list-pagination.component":7,"./buttons/favorite-btn.component":8,"./buttons/follow-btn.component":9,"./list-errors.component":11,"./on-file-change.directive":12,"./show-authed.directive":13,"angular":3}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39225,6 +39231,49 @@ var ListErrors = {
 exports.default = ListErrors;
 
 },{}],12:[function(require,module,exports){
+'use strict';
+
+OnFileChange.$inject = ["$parse"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function OnFileChange($parse) {
+  'ngInject';
+
+  return {
+    restrict: 'A',
+    link: function link($scope, element, attrs, ngModel) {
+
+      // Get the function provided in the file-change attribute.
+      // Note the attribute has become an angular expression,
+      // which is what we are parsing. The provided handler is 
+      // wrapped up in an outer function (attrHandler) - we'll 
+      // call the provided event handler inside the handler()
+      // function below.
+      var attrHandler = $parse(attrs['onFileChange']);
+
+      // This is a wrapper handler which will be attached to the
+      // HTML change event.
+      var handler = function handler(e) {
+
+        $scope.$apply(function () {
+
+          // Execute the provided handler in the directive's scope.
+          // The files variable will be available for consumption
+          // by the event handler.
+          attrHandler($scope, { $event: e, files: e.target.files });
+        });
+      };
+
+      // Attach the handler to the HTML change event 
+      element[0].addEventListener('change', handler, false);
+    }
+  };
+}
+
+exports.default = OnFileChange;
+
+},{}],13:[function(require,module,exports){
 'use strict';
 
 ShowAuthed.$inject = ["User"];
@@ -39263,7 +39312,7 @@ function ShowAuthed(User) {
 
 exports.default = ShowAuthed;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
@@ -39303,22 +39352,21 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
 
 exports.default = AppConfig;
 
-},{"./auth.interceptor":17}],14:[function(require,module,exports){
+},{"./auth.interceptor":18}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var AppConstants = {
-  api: 'https://conduit.productionready.io/api',
-  // api: 'http://localhost:3000/api',
-  jwtKey: 'jwtToken',
+  api: 'http://7a93b54c.ngrok.io',
+  // api: 'http://localhost:5000',
   appName: 'Weyene'
 };
 
 exports.default = AppConstants;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 AppRun.$inject = ["AppConstants", "$rootScope"];
@@ -39347,24 +39395,24 @@ function AppRun(AppConstants, $rootScope) {
 
 exports.default = AppRun;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 angular.module('templates', []).run(['$templateCache', function ($templateCache) {
   $templateCache.put('components/list-errors.html', '<ul class="error-messages" ng-show="$ctrl.errors">\n  <div ng-repeat="(field, errors) in $ctrl.errors">\n    <li ng-repeat="error in errors">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n');
-  $templateCache.put('home/home.html', ' <div class="home-page">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class="banner">\n    <div class="container">\n      <h1 class="logo-font" ng-bind="::$ctrl.appName | lowercase"></h1>\n    </div>\n  </div>\n\n  <div class="container page">\n    <div class="row">\n\n\n      <!-- Main view - contains tabs & article list -->\n      <div class="col-md-9">\n        \n        MAIN\n\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n      <div class="col-md-3">\n          SIDEBAR\n      </div>\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n');
+  $templateCache.put('home/home.html', ' <div class="home-page">\n\n\n  <div class="container page">\n    <div class="row">\n\n\n      <!-- Main view - contains tabs & article list -->\n      <div class="col-md-12">\n<!--         \n        <input type="text" ng-model="$ctrl.slug">\n        <button ng-click="$ctrl.getResult()">Submit</button> -->\n\n        <label class="btn btn-primary">\n          <input type="file" id="importFile" on-file-change="$ctrl.fileChanged($event, files)" class="ng-hide">\n          <i class="mdi mdi-camera"></i> \n          <span>Tira fotinha</span>\t\t\t\t\t\t\t\t\t\t\n        </label>\t\t\t\t\t\t\t\t\t\n\n        <pre>\n          {{ $ctrl.result.data }} {{ $ctrl.pairing.name }}\n        </pre>\n\n      </div>\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n');
   $templateCache.put('layout/app-view.html', '<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n');
   $templateCache.put('layout/footer.html', '<footer>\n  <div class="container">\n    <a class="logo-font" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase"></a>\n    <span class="attribution">\n      &copy; {{::$ctrl.date | date:\'yyyy\'}}\n    </span>\n  </div>\n</footer>\n');
   $templateCache.put('layout/header.html', '<nav class="navbar navbar-light">\n  <div class="container">\n\n    <a class="navbar-brand"\n      ui-sref="app.home"\n      ng-bind="::$ctrl.appName | lowercase">\n    </a>\n\n    <!-- Show this for logged out users -->\n    <ul class="nav navbar-nav pull-xs-right">\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.home">\n          Home\n        </a>\n      </li>\n\n    </ul>\n\n  </div>\n</nav>\n');
+  $templateCache.put('components/buttons/favorite-btn.html', '<button class="btn btn-sm"\n  ng-class="{ \'disabled\' : $ctrl.isSubmitting,\n              \'btn-outline-primary\': !$ctrl.article.favorited,\n              \'btn-primary\': $ctrl.article.favorited }"\n  ng-click="$ctrl.submit()">\n  <i class="ion-heart"></i> <ng-transclude></ng-transclude>\n</button>\n');
+  $templateCache.put('components/buttons/follow-btn.html', '<button\n  class="btn btn-sm action-btn"\n  ng-class="{ \'disabled\': $ctrl.isSubmitting,\n              \'btn-outline-secondary\': !$ctrl.user.following,\n              \'btn-secondary\': $ctrl.user.following }"\n  ng-click="$ctrl.submit()">\n  <i class="ion-plus-round"></i>\n  &nbsp;\n  {{ $ctrl.user.following ? \'Unfollow\' : \'Follow\' }} {{ $ctrl.user.username }}\n</button>\n');
   $templateCache.put('components/article-helpers/article-list.html', '<article-preview\n  article="article"\n  ng-repeat="article in $ctrl.list">\n</article-preview>\n\n<div class="article-preview"\n  ng-hide="!$ctrl.loading">\n  Loading articles...\n</div>\n\n<div class="article-preview"\n  ng-show="!$ctrl.loading && !$ctrl.list.length">\n  No articles are here... yet.\n</div>\n\n<list-pagination\n total-pages="$ctrl.listConfig.totalPages"\n current-page="$ctrl.listConfig.currentPage"\n ng-hide="$ctrl.listConfig.totalPages <= 1">\n</list-pagination>\n');
   $templateCache.put('components/article-helpers/article-meta.html', '<div class="article-meta">\n  <a ui-sref="app.profile.main({ username:$ctrl.article.author.username })">\n    <img ng-src="{{$ctrl.article.author.image}}" />\n  </a>\n\n  <div class="info">\n    <a class="author"\n      ui-sref="app.profile.main({ username:$ctrl.article.author.username })"\n      ng-bind="$ctrl.article.author.username">\n    </a>\n    <span class="date"\n      ng-bind="$ctrl.article.createdAt | date: \'longDate\' ">\n    </span>\n  </div>\n\n  <ng-transclude></ng-transclude>\n</div>\n');
   $templateCache.put('components/article-helpers/article-preview.html', '<div class="article-preview">\n  <article-meta article="$ctrl.article">\n    <favorite-btn\n      article="$ctrl.article"\n      class="pull-xs-right">\n      {{$ctrl.article.favoritesCount}}\n    </favorite-btn>\n  </article-meta>\n\n  <a ui-sref="app.article({ slug: $ctrl.article.slug })" class="preview-link">\n    <h1 ng-bind="$ctrl.article.title"></h1>\n    <p ng-bind="$ctrl.article.description"></p>\n    <span>Read more...</span>\n    <ul class="tag-list">\n      <li class="tag-default tag-pill tag-outline"\n        ng-repeat="tag in $ctrl.article.tagList">\n        {{tag}}\n      </li>\n    </ul>\n  </a>\n</div>\n');
   $templateCache.put('components/article-helpers/list-pagination.html', '<nav>\n  <ul class="pagination">\n\n    <li class="page-item"\n      ng-class="{active: pageNumber === $ctrl.currentPage }"\n      ng-repeat="pageNumber in $ctrl.pageRange($ctrl.totalPages)"\n      ng-click="$ctrl.changePage(pageNumber)">\n\n      <a class="page-link" href="">{{ pageNumber }}</a>\n\n    </li>\n\n  </ul>\n</nav>\n');
-  $templateCache.put('components/buttons/favorite-btn.html', '<button class="btn btn-sm"\n  ng-class="{ \'disabled\' : $ctrl.isSubmitting,\n              \'btn-outline-primary\': !$ctrl.article.favorited,\n              \'btn-primary\': $ctrl.article.favorited }"\n  ng-click="$ctrl.submit()">\n  <i class="ion-heart"></i> <ng-transclude></ng-transclude>\n</button>\n');
-  $templateCache.put('components/buttons/follow-btn.html', '<button\n  class="btn btn-sm action-btn"\n  ng-class="{ \'disabled\': $ctrl.isSubmitting,\n              \'btn-outline-secondary\': !$ctrl.user.following,\n              \'btn-secondary\': $ctrl.user.following }"\n  ng-click="$ctrl.submit()">\n  <i class="ion-plus-round"></i>\n  &nbsp;\n  {{ $ctrl.user.following ? \'Unfollow\' : \'Follow\' }} {{ $ctrl.user.username }}\n</button>\n');
 }]);
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 authInterceptor.$inject = ["JWT", "AppConstants", "$window", "$q"];
@@ -39399,7 +39447,7 @@ function authInterceptor(JWT, AppConstants, $window, $q) {
 
 exports.default = authInterceptor;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 HomeConfig.$inject = ["$stateProvider"];
@@ -39420,28 +39468,72 @@ function HomeConfig($stateProvider) {
 
 exports.default = HomeConfig;
 
-},{}],19:[function(require,module,exports){
-'use strict';
+},{}],20:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HomeCtrl = function HomeCtrl(AppConstants, $scope) {
-  'ngInject';
+var HomeCtrl = function () {
+  HomeCtrl.$inject = ["AppConstants", "$scope", "Pairings", "$state", "Eye"];
+  function HomeCtrl(AppConstants, $scope, Pairings, $state, Eye) {
+    'ngInject';
 
-  _classCallCheck(this, HomeCtrl);
+    _classCallCheck(this, HomeCtrl);
 
-  this.appName = AppConstants.appName;
-  this._$scope = $scope;
-};
-HomeCtrl.$inject = ["AppConstants", "$scope"];
+    this.appName = AppConstants.appName;
+    this.Pairings = Pairings;
+    this._$scope = $scope;
+    this.result = "Vinho loco";
+    this._$state = $state;
+    this.Eye = Eye;
+  }
+
+  _createClass(HomeCtrl, [{
+    key: "getResult",
+    value: function getResult() {
+      var _this = this;
+
+      console.log("GETRESULT");
+      this.Pairings.get(this.slug).then(function (pairing) {
+        return _this.result = pairing;
+      }, function (err) {
+        return _this._$state.go('app.home');
+      });
+    }
+  }, {
+    key: "fileChanged",
+    value: function fileChanged(event, files) {
+      var _this2 = this;
+
+      var file = files[0];
+
+      console.log(file);
+
+      this.Eye.submit(file).then(function (result) {
+        _this2.result = result;
+        _this2.Pairings.get(result.data).then(function (pairing) {
+          return _this2.pairing = pairing;
+        }, function (err) {
+          return _this2._$state.go('app.home');
+        });
+      }, function (err) {
+        return _this2._$state.go('app.home');
+      });
+    }
+  }]);
+
+  return HomeCtrl;
+}();
 
 exports.default = HomeCtrl;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39475,7 +39567,7 @@ homeModule.controller('HomeCtrl', _home4.default);
 
 exports.default = homeModule;
 
-},{"./home.config":18,"./home.controller":19,"angular":3}],21:[function(require,module,exports){
+},{"./home.config":19,"./home.controller":20,"angular":3}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39503,7 +39595,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39535,7 +39627,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39567,7 +39659,7 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":21,"./header.component":22,"angular":3}],24:[function(require,module,exports){
+},{"./footer.component":22,"./header.component":23,"angular":3}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39684,7 +39776,7 @@ var Articles = function () {
 
 exports.default = Articles;
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39745,7 +39837,66 @@ var Comments = function () {
 
 exports.default = Comments;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Eye = function () {
+    Eye.$inject = ["AppConstants", "$http", "$q"];
+    function Eye(AppConstants, $http, $q) {
+        'ngInject';
+
+        _classCallCheck(this, Eye);
+
+        this._AppConstants = AppConstants;
+        this._$http = $http;
+        this._$q = $q;
+    }
+
+    _createClass(Eye, [{
+        key: 'submit',
+        value: function submit(file) {
+            var deferred = this._$q.defer();
+
+            if (!file) {
+                deferred.reject("File is empty");
+                return deferred.promise;
+            }
+
+            var fd = new FormData();
+            fd.append('file', file);
+
+            this._$http({
+                url: this._AppConstants.api + '/food',
+                method: 'POST',
+                headers: {
+                    'enctype': 'multipart/form-data',
+                    'Content-Type': undefined
+                },
+                data: fd
+            }).then(function (res) {
+                return deferred.resolve(res);
+            }, function (err) {
+                return deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+    }]);
+
+    return Eye;
+}();
+
+exports.default = Eye;
+
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39780,6 +39931,14 @@ var _tags = require('./tags.service');
 
 var _tags2 = _interopRequireDefault(_tags);
 
+var _pairings = require('./pairings.service');
+
+var _pairings2 = _interopRequireDefault(_pairings);
+
+var _eye = require('./eye.service');
+
+var _eye2 = _interopRequireDefault(_eye);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Create the module where our functionality can attach to
@@ -39797,9 +39956,13 @@ servicesModule.service('Comments', _comments2.default);
 
 servicesModule.service('Tags', _tags2.default);
 
+servicesModule.service('Pairings', _pairings2.default);
+
+servicesModule.service('Eye', _eye2.default);
+
 exports.default = servicesModule;
 
-},{"./articles.service":24,"./comments.service":25,"./jwt.service":27,"./profile.service":28,"./tags.service":29,"./user.service":30,"angular":3}],27:[function(require,module,exports){
+},{"./articles.service":25,"./comments.service":26,"./eye.service":27,"./jwt.service":29,"./pairings.service":30,"./profile.service":31,"./tags.service":32,"./user.service":33,"angular":3}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39843,7 +40006,60 @@ var JWT = function () {
 
 exports.default = JWT;
 
-},{}],28:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Pairings = function () {
+    Pairings.$inject = ["AppConstants", "$http", "$q"];
+    function Pairings(AppConstants, $http, $q) {
+        'ngInject';
+
+        _classCallCheck(this, Pairings);
+
+        this._AppConstants = AppConstants;
+        this._$http = $http;
+        this._$q = $q;
+    }
+
+    _createClass(Pairings, [{
+        key: "get",
+        value: function get() {
+            var slug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : " ";
+
+            var deferred = this._$q.defer();
+
+            if (!slug.replace(" ", "")) {
+                deferred.reject("Article slug is empty");
+                return deferred.promise;
+            }
+
+            this._$http({
+                url: this._AppConstants.api + '/wine/' + slug,
+                method: 'GET'
+            }).then(function (res) {
+                return deferred.resolve(res.data);
+            }, function (err) {
+                return deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+    }]);
+
+    return Pairings;
+}();
+
+exports.default = Pairings;
+
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39902,7 +40118,7 @@ var Profile = function () {
 
 exports.default = Profile;
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39942,7 +40158,7 @@ var Tags = function () {
 
 exports.default = Tags;
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

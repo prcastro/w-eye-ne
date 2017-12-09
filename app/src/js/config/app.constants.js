@@ -1,7 +1,6 @@
 const AppConstants = {
-  api: 'https://conduit.productionready.io/api',
-  // api: 'http://localhost:3000/api',
-  jwtKey: 'jwtToken',
+  api: 'http://7a93b54c.ngrok.io',
+  // api: 'http://localhost:5000',
   appName: 'Weyene',
 };
 
