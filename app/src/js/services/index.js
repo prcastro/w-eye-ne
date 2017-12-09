@@ -22,5 +22,11 @@ servicesModule.service('Comments', CommentsService);
 import TagsService from './tags.service';
 servicesModule.service('Tags', TagsService);
 
+import PairingsService from './pairings.service';
+servicesModule.service('Pairings', PairingsService);
+
+import EyeService from './eye.service';
+servicesModule.service('Eye', EyeService);
+
 
 export default servicesModule;

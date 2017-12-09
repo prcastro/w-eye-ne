@@ -24,4 +24,7 @@ componentsModule.component('articlePreview', ArticlePreview);
 import ListPagination from './article-helpers/list-pagination.component';
 componentsModule.component('listPagination', ListPagination);
 
+import OnFileChange from './on-file-change.directive';
+componentsModule.directive('onFileChange', OnFileChange);
+
 export default componentsModule;
