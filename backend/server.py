@@ -39,7 +39,8 @@ def food_kind():
 @app.route('/wine/<food>', methods=['GET'])
 def wine_that_matched(food):
     food_wine = json.load(open('../data/food_wine.json'))
-    wine_table = pd.read_csv("../data/wine_table.csv").set_index("name")
+    wine_table = pd.read_csv("../data/wine_table.csv")
+    wine_table.index = wine_table.name
     wine = food_wine[food]
     wine_info = wine_table.loc[wine].to_json()
     return wine_info
