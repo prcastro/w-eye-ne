@@ -3,6 +3,7 @@ import json
 
 import numpy as np
 import pandas as pd
+from keras.models import load_model
 from PIL import Image
 from flask import Flask, request
 
@@ -11,11 +12,16 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'images/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 class MockModel:
     def __init__(self):
         self.foods = pd.read_csv("../data/foods.txt", header=None)[0].values
     def predict(self, X):
         return [np.random.choice(self.foods)]
+
+def keras_load_model():
+    model = load_model('../data/models/model1.h5')
+    return model
 
 def load_model():
     return MockModel()
@@ -33,7 +39,8 @@ def food_kind():
 @app.route('/wine/<food>', methods=['GET'])
 def wine_that_matched(food):
     food_wine = json.load(open('../data/food_wine.json'))
-    return food_wine[food]
+    wine = food_wine[food]
+    return wine
 
 if __name__ == '__main__':
     app.run(debug=True)
