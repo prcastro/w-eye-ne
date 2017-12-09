@@ -1,0 +1,32 @@
+{
+  "name": "weyene",
+  "version": "1.0.0",
+  "description": "See food, suggests wines",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp",
+    "build": "gulp build"
+  },
+  "author": "Fabio Fernandes <fabio@mosh.io>",
+  "dependencies": {
+    "angular": "^1.6.7",
+    "angular-ui-router": "^0.4.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browser-sync": "^2.18.13",
+    "browserify": "^14.5.0",
+    "browserify-ngannotate": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "^2.0.0",
+    "gulp-notify": "^3.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "marked": "^0.3.7",
+    "merge-stream": "^1.0.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
