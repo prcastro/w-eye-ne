@@ -27,11 +27,10 @@ var interceptErrors = function (error) {
   this.emit('end');
 };
 
-
 gulp.task('browserify', ['views'], function () {
   return browserify('./src/js/app.js')
     .transform(babelify, {
-      presets: ["es2015"]
+      presets: ["env"]
     })
     .transform(ngAnnotate)
     .bundle()
