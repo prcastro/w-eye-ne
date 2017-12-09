@@ -13,10 +13,17 @@ def keras_load_model():
     model = load_model('../weights/model-v1.h5')
     return model
 
+
+def normalize_probs(unnormalized_probs):
+    factor  = sum(top_probs)
+    return (np.array(top_probs)/factor).tolist()
+
+
 def get_label(probabilities):
     probabilities = probabilities[0].astype('float64')
     top_outputs = probabilities.argsort()[-5:][::-1]
     top_probs = [probabilities[output] for output in top_outputs]
+    top_probs = normalize_probs(top_probs)
     result = [(prob, classes[str(output)]) for prob, output in zip(top_probs, top_outputs)]
     return result
 
