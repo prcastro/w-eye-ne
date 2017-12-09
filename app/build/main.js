@@ -38935,110 +38935,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./components":11,"./config/app.config":14,"./config/app.constants":15,"./config/app.run":16,"./config/app.templates":17,"./home":21,"./layout":24,"./services":27,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ArticleListCtrl = function () {
-  ArticleListCtrl.$inject = ["Articles", "$scope"];
-  function ArticleListCtrl(Articles, $scope) {
-    'ngInject';
-
-    var _this = this;
-
-    _classCallCheck(this, ArticleListCtrl);
-
-    this._Articles = Articles;
-
-    this.setListTo(this.listConfig);
-
-    $scope.$on('setListTo', function (ev, newList) {
-      _this.setListTo(newList);
-    });
-
-    $scope.$on('setPageTo', function (ev, pageNumber) {
-      _this.setPageTo(pageNumber);
-    });
-  }
-
-  _createClass(ArticleListCtrl, [{
-    key: 'setListTo',
-    value: function setListTo(newList) {
-      // Set the current list to an empty array
-      this.list = [];
-
-      // Set listConfig to the new list's config
-      this.listConfig = newList;
-
-      this.runQuery();
-    }
-  }, {
-    key: 'setPageTo',
-    value: function setPageTo(pageNumber) {
-      this.listConfig.currentPage = pageNumber;
-
-      this.runQuery();
-    }
-  }, {
-    key: 'runQuery',
-    value: function runQuery() {
-      var _this2 = this;
-
-      // Show the loading indicator
-      this.loading = true;
-      this.listConfig = this.listConfig || {};
-
-      // Create an object for this query
-      var queryConfig = {
-        type: this.listConfig.type || undefined,
-        filters: this.listConfig.filters || {}
-      };
-
-      // Set the limit filter from the component's attribute
-      queryConfig.filters.limit = this.limit;
-
-      // If there is no page set, set page as 1
-      if (!this.listConfig.currentPage) {
-        this.listConfig.currentPage = 1;
-      }
-
-      // Add the offset filter
-      queryConfig.filters.offset = this.limit * (this.listConfig.currentPage - 1);
-
-      // Run the query
-      this._Articles.query(queryConfig).then(function (res) {
-        _this2.loading = false;
-
-        // Update list and total pages
-        _this2.list = res.articles;
-
-        _this2.listConfig.totalPages = Math.ceil(res.articlesCount / _this2.limit);
-      });
-    }
-  }]);
-
-  return ArticleListCtrl;
-}();
-
-var ArticleList = {
-  bindings: {
-    limit: '=',
-    listConfig: '='
-  },
-  controller: ArticleListCtrl,
-  templateUrl: 'components/article-helpers/article-list.html'
-};
-
-exports.default = ArticleList;
-
-},{}],6:[function(require,module,exports){
+},{"./components":10,"./config/app.config":13,"./config/app.constants":14,"./config/app.run":15,"./config/app.templates":16,"./home":20,"./layout":23,"./services":26,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39054,7 +38951,7 @@ var ArticleMeta = {
 
 exports.default = ArticleMeta;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39069,7 +38966,7 @@ var ArticlePreview = {
 
 exports.default = ArticlePreview;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39122,7 +39019,7 @@ var ListPagination = {
 
 exports.default = ListPagination;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39187,7 +39084,7 @@ var FavoriteBtn = {
 
 exports.default = FavoriteBtn;
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39253,7 +39150,7 @@ var FollowBtn = {
 
 exports.default = FollowBtn;
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39288,10 +39185,6 @@ var _articlePreview = require('./article-helpers/article-preview.component');
 
 var _articlePreview2 = _interopRequireDefault(_articlePreview);
 
-var _articleList = require('./article-helpers/article-list.component');
-
-var _articleList2 = _interopRequireDefault(_articleList);
-
 var _listPagination = require('./article-helpers/list-pagination.component');
 
 var _listPagination2 = _interopRequireDefault(_listPagination);
@@ -39312,13 +39205,11 @@ componentsModule.component('favoriteBtn', _favoriteBtn2.default);
 
 componentsModule.component('articlePreview', _articlePreview2.default);
 
-componentsModule.component('articleList', _articleList2.default);
-
 componentsModule.component('listPagination', _listPagination2.default);
 
 exports.default = componentsModule;
 
-},{"./article-helpers/article-list.component":5,"./article-helpers/article-meta.component":6,"./article-helpers/article-preview.component":7,"./article-helpers/list-pagination.component":8,"./buttons/favorite-btn.component":9,"./buttons/follow-btn.component":10,"./list-errors.component":12,"./show-authed.directive":13,"angular":3}],12:[function(require,module,exports){
+},{"./article-helpers/article-meta.component":5,"./article-helpers/article-preview.component":6,"./article-helpers/list-pagination.component":7,"./buttons/favorite-btn.component":8,"./buttons/follow-btn.component":9,"./list-errors.component":11,"./show-authed.directive":12,"angular":3}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39333,7 +39224,7 @@ var ListErrors = {
 
 exports.default = ListErrors;
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 ShowAuthed.$inject = ["User"];
@@ -39372,7 +39263,7 @@ function ShowAuthed(User) {
 
 exports.default = ShowAuthed;
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
@@ -39412,7 +39303,7 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
 
 exports.default = AppConfig;
 
-},{"./auth.interceptor":18}],15:[function(require,module,exports){
+},{"./auth.interceptor":17}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39422,12 +39313,12 @@ var AppConstants = {
   api: 'https://conduit.productionready.io/api',
   // api: 'http://localhost:3000/api',
   jwtKey: 'jwtToken',
-  appName: 'Conduit'
+  appName: 'Weyene'
 };
 
 exports.default = AppConstants;
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 AppRun.$inject = ["AppConstants", "$rootScope"];
@@ -39456,15 +39347,15 @@ function AppRun(AppConstants, $rootScope) {
 
 exports.default = AppRun;
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 angular.module('templates', []).run(['$templateCache', function ($templateCache) {
   $templateCache.put('components/list-errors.html', '<ul class="error-messages" ng-show="$ctrl.errors">\n  <div ng-repeat="(field, errors) in $ctrl.errors">\n    <li ng-repeat="error in errors">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n');
-  $templateCache.put('home/home.html', ' <div class="home-page">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class="banner" show-authed="false">\n    <div class="container">\n      <h1 class="logo-font" ng-bind="::$ctrl.appName | lowercase"></h1>\n      <p>A place to share your knowledge.</p>\n    </div>\n  </div>\n\n  <div class="container page">\n    <div class="row">\n\n\n      <!-- Main view - contains tabs & article list -->\n      <div class="col-md-9">\n        <!-- Tabs for toggling between feed, article lists -->\n        <div class="feed-toggle">\n          <ul class="nav nav-pills outline-active">\n\n            <li class="nav-item" show-authed="true">\n              <a href="" class="nav-link"\n                ng-class="{ active: $ctrl.listConfig.type === \'feed\' }"\n                ng-click="$ctrl.changeList({ type: \'feed\' })">\n                Your Feed\n              </a>\n            </li>\n\n            <li class="nav-item">\n              <a href="" class="nav-link"\n                ng-class="{ active: $ctrl.listConfig.type === \'all\' && !$ctrl.listConfig.filters }"\n                ng-click="$ctrl.changeList({ type: \'all\' })">\n                Global Feed\n              </a>\n            </li>\n\n            <li class="nav-item" ng-show="$ctrl.listConfig.filters.tag">\n              <a href="" class="nav-link active">\n                <i class="ion-pound"></i> {{$ctrl.listConfig.filters.tag}}\n              </a>\n            </li>\n\n          </ul>\n        </div>\n\n        <!-- List the current articles -->\n        <article-list limit="10" list-config="$ctrl.listConfig"></article-list>\n\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n      <div class="col-md-3">\n        <div class="sidebar">\n\n          <p>Popular Tags</p>\n\n          <div class="tag-list" ng-show="$ctrl.tags">\n            <a href="" class="tag-default tag-pill"\n              ng-click="$ctrl.changeList({ type: \'all\', filters: { tag: tagName } })"\n              ng-repeat="tagName in $ctrl.tags"\n              ng-bind="tagName">\n            </a>\n          </div>\n\n          <div ng-show="!$ctrl.tagsLoaded">\n            Loading tags...\n          </div>\n\n          <div class="post-preview"\n            ng-show="$ctrl.tagsLoaded && !$ctrl.tags.length">\n            No tags are here... yet.\n          </div>\n\n        </div>\n      </div>\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n');
+  $templateCache.put('home/home.html', ' <div class="home-page">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class="banner">\n    <div class="container">\n      <h1 class="logo-font" ng-bind="::$ctrl.appName | lowercase"></h1>\n    </div>\n  </div>\n\n  <div class="container page">\n    <div class="row">\n\n\n      <!-- Main view - contains tabs & article list -->\n      <div class="col-md-9">\n        \n        MAIN\n\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n      <div class="col-md-3">\n          SIDEBAR\n      </div>\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n');
   $templateCache.put('layout/app-view.html', '<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n');
-  $templateCache.put('layout/footer.html', '<footer>\n  <div class="container">\n    <a class="logo-font" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase"></a>\n    <span class="attribution">\n      &copy; {{::$ctrl.date | date:\'yyyy\'}}.\n      An interactive learning project from <a href="https://thinkster.io">Thinkster</a>.\n      Code licensed under MIT.\n    </span>\n  </div>\n</footer>\n');
-  $templateCache.put('layout/header.html', '<nav class="navbar navbar-light">\n  <div class="container">\n\n    <a class="navbar-brand"\n      ui-sref="app.home"\n      ng-bind="::$ctrl.appName | lowercase">\n    </a>\n\n    <!-- Show this for logged out users -->\n    <ul show-authed="false"\n      class="nav navbar-nav pull-xs-right">\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.home">\n          Home\n        </a>\n      </li>\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.login">\n          Sign in\n        </a>\n      </li>\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.register">\n          Sign up\n        </a>\n      </li>\n\n    </ul>\n\n    <!-- Show this for logged in users -->\n    <ul show-authed="true"\n      class="nav navbar-nav pull-xs-right">\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.home">\n          Home\n        </a>\n      </li>\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.editor">\n          <i class="ion-compose"></i>&nbsp;New Article\n        </a>\n      </li>\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.settings">\n          <i class="ion-gear-a"></i>&nbsp;Settings\n        </a>\n      </li>\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.profile.main({ username: $ctrl.currentUser.username})">\n          <img ng-src="{{$ctrl.currentUser.image}}" class="user-pic" />\n          {{ $ctrl.currentUser.username }}\n        </a>\n      </li>\n\n    </ul>\n\n\n  </div>\n</nav>\n');
+  $templateCache.put('layout/footer.html', '<footer>\n  <div class="container">\n    <a class="logo-font" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase"></a>\n    <span class="attribution">\n      &copy; {{::$ctrl.date | date:\'yyyy\'}}\n    </span>\n  </div>\n</footer>\n');
+  $templateCache.put('layout/header.html', '<nav class="navbar navbar-light">\n  <div class="container">\n\n    <a class="navbar-brand"\n      ui-sref="app.home"\n      ng-bind="::$ctrl.appName | lowercase">\n    </a>\n\n    <!-- Show this for logged out users -->\n    <ul class="nav navbar-nav pull-xs-right">\n\n      <li class="nav-item">\n        <a class="nav-link"\n          ui-sref-active="active"\n          ui-sref="app.home">\n          Home\n        </a>\n      </li>\n\n    </ul>\n\n  </div>\n</nav>\n');
   $templateCache.put('components/article-helpers/article-list.html', '<article-preview\n  article="article"\n  ng-repeat="article in $ctrl.list">\n</article-preview>\n\n<div class="article-preview"\n  ng-hide="!$ctrl.loading">\n  Loading articles...\n</div>\n\n<div class="article-preview"\n  ng-show="!$ctrl.loading && !$ctrl.list.length">\n  No articles are here... yet.\n</div>\n\n<list-pagination\n total-pages="$ctrl.listConfig.totalPages"\n current-page="$ctrl.listConfig.currentPage"\n ng-hide="$ctrl.listConfig.totalPages <= 1">\n</list-pagination>\n');
   $templateCache.put('components/article-helpers/article-meta.html', '<div class="article-meta">\n  <a ui-sref="app.profile.main({ username:$ctrl.article.author.username })">\n    <img ng-src="{{$ctrl.article.author.image}}" />\n  </a>\n\n  <div class="info">\n    <a class="author"\n      ui-sref="app.profile.main({ username:$ctrl.article.author.username })"\n      ng-bind="$ctrl.article.author.username">\n    </a>\n    <span class="date"\n      ng-bind="$ctrl.article.createdAt | date: \'longDate\' ">\n    </span>\n  </div>\n\n  <ng-transclude></ng-transclude>\n</div>\n');
   $templateCache.put('components/article-helpers/article-preview.html', '<div class="article-preview">\n  <article-meta article="$ctrl.article">\n    <favorite-btn\n      article="$ctrl.article"\n      class="pull-xs-right">\n      {{$ctrl.article.favoritesCount}}\n    </favorite-btn>\n  </article-meta>\n\n  <a ui-sref="app.article({ slug: $ctrl.article.slug })" class="preview-link">\n    <h1 ng-bind="$ctrl.article.title"></h1>\n    <p ng-bind="$ctrl.article.description"></p>\n    <span>Read more...</span>\n    <ul class="tag-list">\n      <li class="tag-default tag-pill tag-outline"\n        ng-repeat="tag in $ctrl.article.tagList">\n        {{tag}}\n      </li>\n    </ul>\n  </a>\n</div>\n');
@@ -39473,7 +39364,7 @@ angular.module('templates', []).run(['$templateCache', function ($templateCache)
   $templateCache.put('components/buttons/follow-btn.html', '<button\n  class="btn btn-sm action-btn"\n  ng-class="{ \'disabled\': $ctrl.isSubmitting,\n              \'btn-outline-secondary\': !$ctrl.user.following,\n              \'btn-secondary\': $ctrl.user.following }"\n  ng-click="$ctrl.submit()">\n  <i class="ion-plus-round"></i>\n  &nbsp;\n  {{ $ctrl.user.following ? \'Unfollow\' : \'Follow\' }} {{ $ctrl.user.username }}\n</button>\n');
 }]);
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 authInterceptor.$inject = ["JWT", "AppConstants", "$window", "$q"];
@@ -39508,7 +39399,7 @@ function authInterceptor(JWT, AppConstants, $window, $q) {
 
 exports.default = authInterceptor;
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 HomeConfig.$inject = ["$stateProvider"];
@@ -39529,54 +39420,28 @@ function HomeConfig($stateProvider) {
 
 exports.default = HomeConfig;
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HomeCtrl = function () {
-  HomeCtrl.$inject = ["User", "Tags", "AppConstants", "$scope"];
-  function HomeCtrl(User, Tags, AppConstants, $scope) {
-    'ngInject';
+var HomeCtrl = function HomeCtrl(AppConstants, $scope) {
+  'ngInject';
 
-    var _this = this;
+  _classCallCheck(this, HomeCtrl);
 
-    _classCallCheck(this, HomeCtrl);
-
-    this.appName = AppConstants.appName;
-    this._$scope = $scope;
-
-    // Get list of all tags
-    Tags.getAll().then(function (tags) {
-      _this.tagsLoaded = true;
-      _this.tags = tags;
-    });
-
-    // Set current list to either feed or all, depending on auth status.
-    this.listConfig = {
-      type: User.current ? 'feed' : 'all'
-    };
-  }
-
-  _createClass(HomeCtrl, [{
-    key: 'changeList',
-    value: function changeList(newList) {
-      this._$scope.$broadcast('setListTo', newList);
-    }
-  }]);
-
-  return HomeCtrl;
-}();
+  this.appName = AppConstants.appName;
+  this._$scope = $scope;
+};
+HomeCtrl.$inject = ["AppConstants", "$scope"];
 
 exports.default = HomeCtrl;
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39610,7 +39475,7 @@ homeModule.controller('HomeCtrl', _home4.default);
 
 exports.default = homeModule;
 
-},{"./home.config":19,"./home.controller":20,"angular":3}],22:[function(require,module,exports){
+},{"./home.config":18,"./home.controller":19,"angular":3}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39638,7 +39503,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39670,7 +39535,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39702,7 +39567,7 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":22,"./header.component":23,"angular":3}],25:[function(require,module,exports){
+},{"./footer.component":21,"./header.component":22,"angular":3}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39819,7 +39684,7 @@ var Articles = function () {
 
 exports.default = Articles;
 
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39880,7 +39745,7 @@ var Comments = function () {
 
 exports.default = Comments;
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39934,7 +39799,7 @@ servicesModule.service('Tags', _tags2.default);
 
 exports.default = servicesModule;
 
-},{"./articles.service":25,"./comments.service":26,"./jwt.service":28,"./profile.service":29,"./tags.service":30,"./user.service":31,"angular":3}],28:[function(require,module,exports){
+},{"./articles.service":24,"./comments.service":25,"./jwt.service":27,"./profile.service":28,"./tags.service":29,"./user.service":30,"angular":3}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39978,7 +39843,7 @@ var JWT = function () {
 
 exports.default = JWT;
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40037,7 +39902,7 @@ var Profile = function () {
 
 exports.default = Profile;
 
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40077,7 +39942,7 @@ var Tags = function () {
 
 exports.default = Tags;
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
