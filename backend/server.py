@@ -20,7 +20,7 @@ class MockModel:
         return [np.random.choice(self.foods)]
 
 def keras_load_model():
-    model = load_model('../data/models/model1.h5')
+    model = load_model('../weights/model-v0.h5')
     return model
 
 def load_model():
