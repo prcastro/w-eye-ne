@@ -8,6 +8,7 @@ class HomeCtrl {
     this.result= "Vinho loco"
     this._$state = $state;
     this.Eye = Eye;
+    this.currentFile = "";
 
   }
 
@@ -24,11 +25,13 @@ class HomeCtrl {
     let file = files[0];
 
     console.log(file);
+
+    this.currentFile = file;
     
 		this.Eye.submit(file).then(
       (result) => {
         this.result = result;
-        this.Pairings.get(result.data).then(
+        this.Pairings.get(result.data[0][1]).then(
           (pairing) => this.pairing = pairing,
           (err) => this._$state.go('app.home')
         )

@@ -1,3 +1,5 @@
+import { log } from "util";
+
 export default class Pairings {
     constructor(AppConstants, $http, $q) {
       'ngInject';
@@ -10,6 +12,7 @@ export default class Pairings {
     }
 
     get(slug=" ") {
+        console.log(slug);
         let deferred = this._$q.defer();
         
         if (!slug.replace(" ", "")) {
