@@ -40167,7 +40167,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var AppConstants = {
-  api: 'http://7a93b54c.ngrok.io',
+  api: 'http://097910bd.ngrok.io',
   // api: 'http://localhost:5000',
   appName: 'Weyene'
 };
@@ -40208,7 +40208,7 @@ exports.default = AppRun;
 
 angular.module('templates', []).run(['$templateCache', function ($templateCache) {
   $templateCache.put('components/list-errors.html', '<ul class="error-messages" ng-show="$ctrl.errors">\n  <div ng-repeat="(field, errors) in $ctrl.errors">\n    <li ng-repeat="error in errors">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n');
-  $templateCache.put('home/home.html', ' <div class="home-page">\n\n  <div class="container">\n\n  </div>\n\n  <div class="control-container">\t\t\t\t\t\t\t\t\n      \n    <label class="btn btn-primary pic-button">\n      <input type="file" id="importFile" on-file-change="$ctrl.fileChanged($event, files)" class="ng-hide">\n      <i class="ion-ios-camera" style="font-size: 40px;\n      vertical-align: middle;"></i>\n    </label>\n\n  </div>\n\n</div>\n');
+  $templateCache.put('home/home.html', ' <div class="home-page">\n\n  <div class="container">\n\n    <div ng-if="$ctrl.result" style="background: #fff; margin-bottom: 50px; border-radius: 4px; padding: 15px; margin-top: 15px;">\n      <h4 class="hero" style="margin: 20px auto; text-align: center">{{ $ctrl.resultName | lowercase }}</h4>\n      <p class="text-muted" style="text-align: center;">coma acompanhado de</p>\n      <h4 class="hero" style="margin: 20px auto; text-align: center">{{ $ctrl.pairing.name | lowercase }}</h4>\n      <p style="text-align: center;">\n          <img style="max-height: 250px;" src="{{$ctrl.pairing.image}}" alt="">\n      </p>\n\n      <div class="list-group">\n        <a class="btn btn-primary  buy-button" href="{{$ctrl.pairing.url}}" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">\n          <i class="ion-ios-cart" style="font-size: 30px; vertical-align: middle; margin-right: 20px;"></i>Compre por <strong>{{ $ctrl.pairing.price | currency:"R$"}}</strong>\n        </a>\n      </div>\n\n      <h4 class="divider">outros resultados</h4>\n      <hr>\n      <div class="list-group">\n        <a ng-repeat="r in $ctrl.result.data" class="list-group-item list-group-item-action flex-column align-items-start">\n          <p>{{r[1]}}</p>\n          <div class="progress">\n            <div class="progress-bar" role="progressbar" style="width: {{r[0]*100}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{(r[0]*100).toFixed(2)}}%</div>\n          </div>\n        </a>\n      </div>\n    </div>\n\n  </div>\n\n  <div class="control-container">\t\t\t\t\t\t\t\n      \n    <label class="btn btn-primary pic-button">\n      <input type="file" id="importFile" on-file-change="$ctrl.fileChanged($event, files)" class="ng-hide">\n      <i class="ion-ios-camera" style="font-size: 40px;\n      vertical-align: middle;"></i>\n    </label>\n\n  </div>\n\n</div>\n');
   $templateCache.put('layout/app-view.html', '<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n');
   $templateCache.put('layout/footer.html', '<footer>\n  <div class="container">\n    <a class="logo-font" ui-sref="app.home" ng-bind="::$ctrl.appName | lowercase"></a>\n    <span class="attribution">\n      &copy; {{::$ctrl.date | date:\'yyyy\'}}\n    </span>\n  </div>\n</footer>\n');
   $templateCache.put('layout/header.html', '<nav class="navbar navbar-light">\n  <div class="container">\n\n    <a class="navbar-brand"\n      ui-sref="app.home"\n      ng-bind="::$ctrl.appName | lowercase">\n    </a>\n\n  </div>\n</nav>\n');
@@ -40297,44 +40297,37 @@ var HomeCtrl = function () {
     this.appName = AppConstants.appName;
     this.Pairings = Pairings;
     this._$scope = $scope;
-    this.result = "Vinho loco";
     this._$state = $state;
     this.Eye = Eye;
     this.currentFile = "";
   }
 
   _createClass(HomeCtrl, [{
-    key: "getResult",
-    value: function getResult() {
-      var _this = this;
-
-      console.log("GETRESULT");
-      this.Pairings.get(this.slug).then(function (pairing) {
-        return _this.result = pairing;
-      }, function (err) {
-        return _this._$state.go('app.home');
-      });
+    key: "_prettyName",
+    value: function _prettyName(name) {
+      var s = name.replace(/_/g, " ");
+      return s.charAt(0).toUpperCase() + s.slice(1);
     }
   }, {
     key: "fileChanged",
     value: function fileChanged(event, files) {
-      var _this2 = this;
+      var _this = this;
 
       var file = files[0];
-
-      console.log(file);
 
       this.currentFile = file;
 
       this.Eye.submit(file).then(function (result) {
-        _this2.result = result;
-        _this2.Pairings.get(result.data[0][1]).then(function (pairing) {
-          return _this2.pairing = pairing;
+        swal('Prontinho!', 'Análise concluída!', 'success');
+        _this.result = result;
+        _this.resultName = _this._prettyName(result.data[0][1]);
+        _this.Pairings.get(result.data[0][1]).then(function (pairing) {
+          return _this.pairing = pairing;
         }, function (err) {
-          return _this2._$state.go('app.home');
+          return _this._$state.go('app.home');
         });
       }, function (err) {
-        return _this2._$state.go('app.home');
+        return _this._$state.go('app.home');
       });
     }
   }]);
@@ -40674,6 +40667,7 @@ var Eye = function () {
     _createClass(Eye, [{
         key: 'submit',
         value: function submit(file) {
+            swal('Arquivo enviado!', 'Analisando!', 'warning');
             var deferred = this._$q.defer();
 
             if (!file) {

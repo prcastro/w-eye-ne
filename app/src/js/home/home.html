@@ -2,9 +2,35 @@
 
   <div class="container">
 
+    <div ng-if="$ctrl.result" style="background: #fff; margin-bottom: 50px; border-radius: 4px; padding: 15px; margin-top: 15px;">
+      <h4 class="hero" style="margin: 20px auto; text-align: center">{{ $ctrl.resultName | lowercase }}</h4>
+      <p class="text-muted" style="text-align: center;">coma acompanhado de</p>
+      <h4 class="hero" style="margin: 20px auto; text-align: center">{{ $ctrl.pairing.name | lowercase }}</h4>
+      <p style="text-align: center;">
+          <img style="max-height: 250px;" src="{{$ctrl.pairing.image}}" alt="">
+      </p>
+
+      <div class="list-group">
+        <a class="btn btn-primary  buy-button" href="{{$ctrl.pairing.url}}" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
+          <i class="ion-ios-cart" style="font-size: 30px; vertical-align: middle; margin-right: 20px;"></i>Compre por <strong>{{ $ctrl.pairing.price | currency:"R$"}}</strong>
+        </a>
+      </div>
+
+      <h4 class="divider">outros resultados</h4>
+      <hr>
+      <div class="list-group">
+        <a ng-repeat="r in $ctrl.result.data" class="list-group-item list-group-item-action flex-column align-items-start">
+          <p>{{r[1]}}</p>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{r[0]*100}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{(r[0]*100).toFixed(2)}}%</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 
-  <div class="control-container">								
+  <div class="control-container">							
       
     <label class="btn btn-primary pic-button">
       <input type="file" id="importFile" on-file-change="$ctrl.fileChanged($event, files)" class="ng-hide">

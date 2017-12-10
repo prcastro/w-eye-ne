@@ -8,6 +8,11 @@ export default class Eye {
     }
 
     submit(file) {
+        swal(
+            'Arquivo enviado!',
+            'Analisando!',
+            'warning'
+          )
         let deferred = this._$q.defer();
         
         if (!file) {
