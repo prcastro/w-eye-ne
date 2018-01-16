@@ -1,2 +1,2 @@
-# hackaton-cotidiano
+# W-eye-ne
 Hackaton da Cotidiano
